@@ -1,0 +1,13 @@
+categorizations/
+specs/
+my/
+
+__pycache__/
+
+.vscode/
+.DS_Store
+draft/
+envAccountant/
+
+uncategorized.csv
+scratchpad.ipynb

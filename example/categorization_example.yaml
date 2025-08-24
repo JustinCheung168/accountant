@@ -1,0 +1,184 @@
+---
+groups:
+  INCOME:
+    Income:
+      - Income - Salary
+      - Income - Tax
+      - Income - Misc
+  NECESSITIES:
+    Housing:
+      - Housing - Rent
+      - Housing - Utilities
+      - Housing - Insurance
+      - Housing - Internet
+      - Housing - Misc
+    Insurance:
+      - Insurance - Health, Premium
+      - Insurance - Dental, Premium
+      - Insurance - Vision, Premium
+    Healthcare:
+      - Healthcare - Vision
+      - Healthcare - Dental
+      - Healthcare - Gym
+    Transit:
+      - Transit - Loan
+      - Transit - Gas
+      - Transit - Maintenance
+      - Transit - Lyft
+      - Transit - Flight
+      - Transit - DMV
+      - Transit - Public
+      - Transit - Tickets
+      - Transit - Toll
+      - Transit - Misc
+    Food:
+      - Food - Groceries
+      - Food - Snacks
+      - Food - Drinks
+      - Food - Tip
+      - Food - Credit Card Processing
+    Cat:
+      - Cat - Food
+      - Cat - Litter
+      - Cat - Vet
+      - Cat - Furniture
+    Coffee:
+      - Coffee - Coffee
+    School:
+      - School - Misc
+    Tools:
+      - Tools - Room
+      - Tools - Cookware
+      - Tools - House
+      - Tools - Car
+    Supplies:
+      - Supplies - Kitchen
+      - Supplies - House
+      - Supplies - Room
+      - Supplies - Cleaners
+    Hygiene:
+      - Hygiene - Selfcare
+      - Hygiene - COVID
+      - Hygiene - Haircut
+    Administrative:
+      - Administrative - Tax Filing
+    Account Fees:
+      - Account Fees - Chase
+  SAVINGS:
+    Savings:
+      - Savings - Retirement
+      - Savings - Health
+      - Savings - Vision/Dental
+      - Savings - AmEx Savings
+  WANTS:
+    Cat Toys:
+      - Cat Toys - Fun
+    Travel:
+      - Travel - Flight
+      - Travel - Housing
+      - Travel - Misc
+    Luxury Food:
+      - Luxury Food - Restaurant
+    Donation:
+      - Donation - Medical
+    Subscriptions:
+      - Subscriptions - Streaming
+      - Subscriptions - News
+      - Subscriptions - Misc
+    Entertainment:
+      - Entertainment - Social
+    Music:
+      - Music - Gear
+    Clothes:
+      - Clothes - Clothes
+    Unknown:
+      - Unknown - Unknown
+    Miscellaneous:
+      - Miscellaneous - Transfer
+      - Miscellaneous - ATM Withdrawal
+      - Miscellaneous - Gift
+      - Miscellaneous - Work
+      - Miscellaneous - Tax Filing
+
+
+
+categorizers:
+  # Case-insensitive substrings of Official Name entries (specify as uppercase here)
+  keyword:
+    Entertainment - Social:
+      - AXE THROWING
+      - CAROLINES JAZZ CLUB
+    Food - Groceries:
+      - FRESH THYME
+      - H-E-B
+      - H-MART
+      - H MART
+      - HELLO FRESH
+      - HELLOFRESH
+      - GLORIOSOS ITALIAN MARKET
+    Healthcare - Vision:
+      - EYE CARE
+    Housing - Internet:
+      - INTERNET
+    Housing - Rent:
+      - RENT
+    Housing - Utilities:
+      - ENERGY
+      - 💡
+      - ⚡
+      - SEWAGE, WATER, TRASH
+    Luxury Food - Restaurant:
+      - ALEM ETHIOPIAN
+      - BANH MI
+      - BOLLYWOOD GRILL
+      - CHEF PAZ
+    Music - Gear:
+      - GUITARCENTER
+      - GUITAR CENTER
+      - MUSIC GO ROUND
+    Supplies - House:
+      - FAMILY DOLLAR
+      - PAPER TOWEL
+      - SOAP
+      - WALGREENS
+      - CVS/PHARMACY
+    Healthcare - Gym:
+      - GYM
+    Subscriptions - Streaming:
+      - DROPOUT
+      - DISNEY PLUS
+    Subscriptions - News:
+      - NYTIMES
+    Tools - House:
+      - ACE HDWE
+      - ACE HARDWARE
+      - IKEA
+      - THE HOME DEPOT
+      - TARGET
+    Transit - Flight:
+      - AIR CANADA
+      - ALASKA AIR
+      - SPIRIT AIRL
+    Transit - Gas:
+      - BP#
+      - CHEVRON
+      - CITGO US GAS
+
+  # Case-sensitive Official Name entries. Prioritized over keyword matches
+  exact:
+    Entertainment - Social:
+      - (Jackson McNabb->Justin Cheung) 🪱🏜️
+    Income - Salary:
+      - (the boss->Justin Cheung) Regular Pay
+      - Regular Pay
+      - Regular Pay Salary
+    Income - Tax:
+      - Federal
+      - Federal Withholding
+      - Medicare
+      - Social Security
+      - OASDI
+    Luxury Food - Restaurant:
+      - (Jackson McNabb->Justin Cheung) Za
+      - (Jackson McNabb->Justin Cheung) 💯
+      - (Jackson McNabb->Justin Cheung) My Birthday Treat

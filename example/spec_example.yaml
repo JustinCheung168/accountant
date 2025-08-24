@@ -1,0 +1,17 @@
+---
+# Specs provide the definitions needed to create reports. A report is just a set of visualizations.
+# Path to directory containing all data, in the format specified in the `README.md`.
+path_data_source: ./example/data/
+# Specify a place to put normalized data.
+path_data_normalized: ./example/normalized/
+# Specify a place to put reports.
+path_data_report: ./example/reports/example_report/
+# Specify the range of dates to include in analyses.
+date_start: 8/27/2022
+date_end: 12/31/2025
+# Specify the ruleset to use to categorize.
+categorization: ./example/categorization_example.yaml
+# Specify the analyses to run.
+analyses:
+  - write_csv_of_merged_data
+  - write_txt_category_spending_summary
