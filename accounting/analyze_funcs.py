@@ -65,15 +65,15 @@ def write_txt_category_spending_summary(artifact_dir: Path, df: pd.DataFrame, sp
         # Calculate overall balance
         balance = df["Amount"].sum()
         f.write(f'Total Balance: {format_dollars(balance)}\n')
-        # Calculate "regular income" (salary minus tax)
-        regular_income: float = df.loc[(df["Category"] == "Income - Salary") | (df["Category"] == "Income - Tax"), "Amount"].sum()
-        f.write(f'Regular Income (Salary after Tax): {format_dollars(regular_income)}\n')
+        # Calculate after-tax salary (salary minus tax)
+        after_tax_salary: float = df.loc[(df["Category"] == "Income - Salary") | (df["Category"] == "Income - Tax"), "Amount"].sum()
+        f.write(f'After-Tax Salary: {format_dollars(after_tax_salary)}\n')
         # Calculate group breakdown
         for group, supercategories in groups.items():
             group_df: pd.DataFrame = df.loc[df["Group"] == group]
             group_sum = group_df["Amount"].sum()
             if "Group" in levels:
-                income_fraction_str = f' ({round(100*-group_sum/regular_income, 3)}% of regular income)' if group != "INCOME" else ""
+                income_fraction_str = f' ({round(100*-group_sum/after_tax_salary, 3)}% of after-tax salary)' if group != "INCOME" else ""
                 f.write(f'{format_dollars(group_sum)} --- {group} {income_fraction_str}\n')
             for supercategory, categories in supercategories.items():
                 supercategory_df: pd.DataFrame = df.loc[df["Supercategory"] == supercategory]
