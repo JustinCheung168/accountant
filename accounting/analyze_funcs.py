@@ -35,6 +35,24 @@ def write_csv_of_merged_data(artifact_dir: Path, df: pd.DataFrame, spec: Specifi
     df.to_csv(artifact_path, index=False)
     return f"Wrote {artifact_path}"
 
+def write_sorted_csv_of_merged_data(artifact_dir: Path, df: pd.DataFrame, spec: Specification) -> Optional[str]:
+    """
+    Write the merged transaction DataFrame to a CSV file in the artifact directory.
+    """
+    os.makedirs(artifact_dir, exist_ok=True)
+    artifact_path = artifact_dir / Path("sorted.csv")
+    df.sort_values(by="Amount").to_csv(artifact_path, index=False)
+    return f"Wrote {artifact_path}"
+
+def write_csv_above_1k_of_merged_data(artifact_dir: Path, df: pd.DataFrame, spec: Specification) -> Optional[str]:
+    """
+    Write the merged transaction DataFrame to a CSV file in the artifact directory.
+    """
+    os.makedirs(artifact_dir, exist_ok=True)
+    artifact_path = artifact_dir / Path("merged_over_1k.csv")
+    df[(df["Amount"]>=1000.00) | (df["Amount"]<=-1000.00)].to_csv(artifact_path, index=False)
+    return f"Wrote {artifact_path}"
+
 def write_txt_category_spending_summary(artifact_dir: Path, df: pd.DataFrame, spec: Specification) -> Optional[str]:
     """
     Write a text summary of category spending, grouped by Group, Supercategory, and Category, to the artifact directory.
@@ -47,8 +65,9 @@ def write_txt_category_spending_summary(artifact_dir: Path, df: pd.DataFrame, sp
         # Calculate overall balance
         balance = df["Amount"].sum()
         f.write(f'Total Balance: {format_dollars(balance)}\n')
+        # Calculate "regular income" (salary minus tax)
         regular_income: float = df.loc[(df["Category"] == "Income - Salary") | (df["Category"] == "Income - Tax"), "Amount"].sum()
-        f.write(f'Regular Income: {format_dollars(regular_income)}\n')
+        f.write(f'Regular Income (Salary after Tax): {format_dollars(regular_income)}\n')
         # Calculate group breakdown
         for group, supercategories in groups.items():
             group_df: pd.DataFrame = df.loc[df["Group"] == group]
@@ -81,6 +100,8 @@ def write_txt_biggest_irregular_spending(artifact_dir: Path, df: pd.DataFrame, s
 ANALYZE_FUNCS: dict[str, AnalysisFunc] = {
     "print_balance": print_balance,
     "write_csv_of_merged_data": write_csv_of_merged_data,
+    "write_sorted_csv_of_merged_data": write_sorted_csv_of_merged_data,
+    "write_csv_above_1k_of_merged_data": write_csv_above_1k_of_merged_data,
     "write_txt_category_spending_summary": write_txt_category_spending_summary,
     "write_png_category_spending_piechart": write_png_category_spending_piechart,
     "write_png_monthly_food_spending_linechart": write_png_monthly_food_spending_linechart,
