@@ -71,7 +71,13 @@ class Analyst(LoggerMixin):
         # Perform the requested analyses.
         for analysis_name in self.spec.analysis_names:
             analysis = ANALYZE_FUNCS[analysis_name]
-            result_message = analysis(self.spec.path_data_report, merged_transaction_file.table, self.spec)
+
+            result_message = None
+            try:
+                result_message = analysis(self.spec.path_data_report, merged_transaction_file.table, self.spec)
+            except Exception as e:
+                self.logger.error(f"Failed to run {analysis}: {e}")
+
             if result_message is not None:
                 self.logger.info(result_message)
 
