@@ -1,5 +1,9 @@
 import logging
 
+# Suppress low-level matplotlib logs.
+import matplotlib 
+logging.getLogger('matplotlib').setLevel(logging.WARNING)
+
 class LoggerMixin:
     @property
     def logger(self):

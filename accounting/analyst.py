@@ -79,7 +79,7 @@ class Analyst(LoggerMixin):
             try:
                 result_message = analysis(self.spec.path_data_report, merged_transaction_file.table, self.spec)
             except Exception as e:
-                self.logger.error(f"Failed to run {analysis}: {e}")
+                self.logger.error(f"Failed to run {analysis.__name__}. {type(e).__name__}: {e}")
 
             if result_message is not None:
                 self.logger.info(result_message)
