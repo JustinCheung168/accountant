@@ -46,6 +46,34 @@ class WFActiveCash(_WellsFargo):
     def normalize(path: Path) -> TransactionFile:
         return _WellsFargo._normalize(path, source = "WF Active Cash")
 
+class AppleCard:
+    @staticmethod
+    def normalize(path: Path) -> TransactionFile:
+        # Read from file
+        record = pd.read_csv(path, parse_dates=[0], date_format="%m/%d/%Y") # type: ignore[reportUnknownMemberType]
+
+        record.drop(["Clearing Date", "Merchant", "Category", "Type", "Purchased By"], axis=1, inplace=True)
+
+        # Move Amount column
+        record.rename(
+            columns={
+                "Transaction Date": "Datetime",
+                "Description": "Official Name",
+                "Amount (USD)": "Amount",
+            },
+            inplace=True,
+        )
+
+        record.insert(1, "Source", "Apple Card") # type: ignore[reportUnknownMemberType]
+        record["Alt Source"] = None
+        record["Alt Source Official Name"] = None
+
+        print(record["Datetime"])
+
+        record.reset_index(inplace=True, drop=True)
+
+        return TransactionFile(record)
+
 class Venmo:
     @staticmethod
     def normalize(path: Path) -> TransactionFile:
@@ -85,6 +113,7 @@ NORMALIZE_FUNCS: dict[str, NormalizeFunc] = {
     "WF Checking": WFChecking.normalize,
     "WF Active Cash": WFActiveCash.normalize,
     "Venmo": Venmo.normalize,
+    "Apple Card": AppleCard.normalize,
 }
 
 # Add personal functions which will not be tracked by git.
