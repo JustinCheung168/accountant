@@ -1,6 +1,7 @@
 """Defines the Analyst class, which orchestrates the normalization, merging, categorization, and analysis of transaction data for accounting reports."""
 
 import glob
+import os
 from pathlib import Path
 
 from accounting.analyze_funcs import ANALYZE_FUNCS
@@ -71,6 +72,8 @@ class Analyst(LoggerMixin):
         # Perform the requested analyses.
         for analysis_name in self.spec.analysis_names:
             analysis = ANALYZE_FUNCS[analysis_name]
+
+            os.makedirs(self.spec.path_data_report, exist_ok=True)
 
             result_message = None
             try:

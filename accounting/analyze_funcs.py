@@ -30,7 +30,6 @@ def write_csv_of_merged_data(artifact_dir: Path, df: pd.DataFrame, spec: Specifi
     """
     Write the merged transaction DataFrame to a CSV file in the artifact directory.
     """
-    os.makedirs(artifact_dir, exist_ok=True)
     artifact_path = artifact_dir / Path("merged.csv")
     df.to_csv(artifact_path, index=False)
     return f"Wrote {artifact_path}"
@@ -39,7 +38,6 @@ def write_sorted_csv_of_merged_data(artifact_dir: Path, df: pd.DataFrame, spec: 
     """
     Write the merged transaction DataFrame to a CSV file in the artifact directory.
     """
-    os.makedirs(artifact_dir, exist_ok=True)
     artifact_path = artifact_dir / Path("sorted.csv")
     df.sort_values(by="Amount").to_csv(artifact_path, index=False)
     return f"Wrote {artifact_path}"
@@ -48,7 +46,6 @@ def write_csv_above_1k_of_merged_data(artifact_dir: Path, df: pd.DataFrame, spec
     """
     Write the merged transaction DataFrame to a CSV file in the artifact directory.
     """
-    os.makedirs(artifact_dir, exist_ok=True)
     artifact_path = artifact_dir / Path("merged_over_1k.csv")
     df[(df["Amount"]>=1000.00) | (df["Amount"]<=-1000.00)].to_csv(artifact_path, index=False)
     return f"Wrote {artifact_path}"
@@ -57,7 +54,6 @@ def write_txt_category_spending_summary(artifact_dir: Path, df: pd.DataFrame, sp
     """
     Write a text summary of category spending, grouped by Group, Supercategory, and Category, to the artifact directory.
     """
-    os.makedirs(artifact_dir, exist_ok=True)
     artifact_path = artifact_dir / Path("category_spending.txt")
     with open(artifact_path, "w") as f:
         levels = ["Group", "Supercategory", "Category"]
