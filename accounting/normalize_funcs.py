@@ -1,4 +1,5 @@
 """Functions for normalization."""
+from enum import Enum
 import logging
 from pathlib import Path
 
@@ -18,14 +19,38 @@ class Manual:
         record["Alt Source Official Name"] = None
         return TransactionFile(record)
 
+class _WFHeaderRowFormat(Enum):
+    HEADER_ROW_FORMAT_2024 = 2024
+    HEADER_ROW_FORMAT_2025 = 2025
+
 class _WellsFargo:
     @staticmethod
-    def _normalize(path: Path, source: str) -> TransactionFile:
-        # Read from file
-        record = pd.read_csv(path, parse_dates=[0], names=["Datetime", "Amount", "unknown0", "unknown1", "Official Name"]) # type: ignore[reportUnknownMemberType]
+    def _infer_header_row_format(path: Path) -> _WFHeaderRowFormat:
+        """
+        Check the format of a CSV for Wells Fargo based on its header row.
+        """
+        first_row = pd.read_csv(path, header=None, nrows=1, dtype=str, encoding="utf-8-sig").iloc[0].tolist()
+        normalized_first_row = [str(x).strip().upper() for x in first_row]
 
-        # Move Amount column
-        record["Amount"] = record.pop("Amount")
+        # Before 2025, records from WF have no header row.
+        # Starting in 2025, records from WF have this header row:
+        if normalized_first_row == ["DATE", "DESCRIPTION", "AMOUNT", "CHECK #", "STATUS"]:
+            return _WFHeaderRowFormat.HEADER_ROW_FORMAT_2025
+        else:
+            return _WFHeaderRowFormat.HEADER_ROW_FORMAT_2024
+
+    @staticmethod
+    def _normalize(path: Path, source: str) -> TransactionFile:
+        header_row_format = _WellsFargo._infer_header_row_format(path)
+        if header_row_format == _WFHeaderRowFormat.HEADER_ROW_FORMAT_2024:
+            # Read from file
+            record = pd.read_csv(path, parse_dates=[0], names=["Datetime", "Amount", "unknown0", "unknown1", "Official Name"]) # type: ignore[reportUnknownMemberType]
+            # Move Amount column
+            record["Amount"] = record.pop("Amount")
+        elif header_row_format == _WFHeaderRowFormat.HEADER_ROW_FORMAT_2025:
+            record = pd.read_csv(path, parse_dates=[0], header=0, names=["Datetime", "Official Name", "Amount", "unknown0", "unknown1"]) # type: ignore[reportUnknownMemberType]
+        else:
+            raise NotImplementedError(f"Unsupported header row format {header_row_format}")
 
         record.drop(["unknown0", "unknown1"], axis=1, inplace=True)
         record.insert(1, "Source", source) # type: ignore[reportUnknownMemberType]
@@ -67,8 +92,6 @@ class AppleCard:
         record.insert(1, "Source", "Apple Card") # type: ignore[reportUnknownMemberType]
         record["Alt Source"] = None
         record["Alt Source Official Name"] = None
-
-        print(record["Datetime"])
 
         record.reset_index(inplace=True, drop=True)
 

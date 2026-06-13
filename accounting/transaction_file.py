@@ -39,7 +39,7 @@ class RigidDataFrame(LoggerMixin):
             if col_name not in self.table.columns:
                 raise SchemaMismatchException(f'Missing column {col_name}')
             elif not col_type_check(self.table[col_name]):
-                raise SchemaMismatchException(f'Wrong type "{self.table[col_name].dtype}" for {col_name}')
+                raise SchemaMismatchException(f'Wrong type "{self.table[col_name].dtype}" for {col_name} value {self.table[col_name]}')
 
         # Check the order of columns
         if list(self.table.columns) != list(self.COLUMN_TYPE_CHECKS.keys()):
