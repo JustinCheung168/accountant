@@ -68,8 +68,8 @@ class Categorizer(LoggerMixin):
         UNCATEGORIZED_CSV = "./uncategorized.csv"
         if num_uncategorized > 0:
             self.logger.warning(f"Number of entries that were not autocategorized: {num_uncategorized}")
-            value_uncategorized = df.loc[uncategorized_mask, "Amount"].sum()
-            self.logger.warning(f"Total value of entries not autocategorized: {value_uncategorized}")
+            value_uncategorized = df.loc[uncategorized_mask, "Amount"].abs().sum()
+            self.logger.warning(f"Total absolute value of entries not autocategorized: {value_uncategorized}")
             df.loc[uncategorized_mask].sort_values(by="Amount").to_csv(UNCATEGORIZED_CSV, index=False)
             self.logger.warning(f"{colorama.Style.BRIGHT}Please look at {UNCATEGORIZED_CSV} and decide categories for its entries.{colorama.Style.RESET_ALL}")
         elif os.path.exists(UNCATEGORIZED_CSV):
