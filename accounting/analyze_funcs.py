@@ -16,6 +16,7 @@ from typing import Optional
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import calendar
 
 from accounting.utils import format_dollars
@@ -103,6 +104,7 @@ def write_png_monthly_food_spending_stacked_barchart(artifact_dir: Path, df: pd.
     # Define the categories to include in the chart
     categories = [
         "Luxury Food - Restaurant",
+        "Luxury Food - Coffee",
         "Food - Groceries",
         "Food - Snacks",
         "Food - Drinks",
@@ -141,22 +143,24 @@ def write_png_monthly_food_spending_stacked_barchart(artifact_dir: Path, df: pd.
             bottom = monthly_data[category] if bottom is None else bottom + monthly_data[category]
 
     # Add supercategory totals as text labels
+    period_total_combined = 0
     for month, row in supercategory_totals.iterrows():
         total_luxury_food = row.get("Luxury Food", 0)
         total_food = row.get("Food", 0)
         total_combined = total_luxury_food + total_food
-        difference = total_combined - monthly_data.loc[month].sum()
+        assert total_combined - monthly_data.loc[month].sum() < 0.05
+        period_total_combined += total_combined
         ax.text(
             month,
             total_combined + 50,  # Adjust position slightly above the bar
-            f"Total: ${total_combined:.2f}\nDiff: ${difference:.2f}",
+            f"Total: ${total_combined:.2f}",
             ha="center",
             fontsize=10,
             color="black",
         )
 
     # Customize the chart
-    ax.set_title("Monthly Food Spending (Stacked by Category)", fontsize=16)
+    ax.set_title(f"Monthly Food Spending (Stacked by Category) - Total={format_dollars(period_total_combined)}", fontsize=16)
     ax.set_xlabel("Month", fontsize=14)
     ax.set_ylabel("Spending ($)", fontsize=14)
     ax.set_xticks(range(1, 13))
