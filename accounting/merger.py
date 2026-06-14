@@ -38,7 +38,7 @@ class Merger(LoggerMixin):
         paystub_ge_redundant = record["Official Name"].str.contains("GENERAL ELECTRIC REG.SALARY") # Corresponds to Pay Stubs (GE)
         paystub_gehc_redundant = record["Official Name"].str.contains("GE HEALTHCARE TE REG.SALARY") # Corresponds to Pay Stubs (GEHC)
         paystub_redundant = paystub_ge_redundant | paystub_gehc_redundant
-        venmo_redundant = record["Official Name"].str.contains("VENMO PAYMENT") # Corresponds to Venmo
+        venmo_redundant = record["Official Name"].str.contains("VENMO PAYMENT") | record["Official Name"].str.contains("VENMO            PAYMENT") # Corresponds to Venmo
 
         from_wf_checking = record["Source"].str.contains("WF Checking")
 
